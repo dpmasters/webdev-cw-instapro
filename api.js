@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-import { posts } from "./index.js";
+import { renderApp, setPosts } from "./index.js";
 
 const personalKey = "dmitriy-panfilov"; //"prod";
 const baseHost = "https://wedev-api.sky.pro";
@@ -86,7 +86,30 @@ export function addPost({ token, imageUrl }) {
     if (response.status === 400) {
       alert('Необходимо добавить фото и комментарий')
     } else {
-      return response.json()
+      return response.json();
     }
+  });
+}
+
+export function getPostsOfUser({ token, userId }) {
+  return fetch(`${postsHost}/user-posts/${userId}`, {
+      method: 'GET',
+      headers: {
+          Authorization: token,
+      },
   })
+      .then((response) => {
+          if (response.status === 401) {
+              throw new Error('Нет авторизации')
+          }
+          return response.json();
+      })
+      .then((data) => {
+          setPosts(data.posts)
+          return data.posts;
+      })
+      .catch((error) => {
+          alert('Пропал интернет, попробуйте позже')
+          console.log(error)
+      });
 }

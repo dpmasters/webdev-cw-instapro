@@ -1,4 +1,4 @@
-import { getPosts, addPost } from "./api.js";
+import { getPosts, addPost, getPostsOfUser } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -20,6 +20,10 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
+export const setPosts = (newPosts) => {
+  posts = newPosts
+};
+
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
@@ -31,9 +35,6 @@ export const logout = () => {
   goToPage(POSTS_PAGE);
 };
 
-/**
- * Включает страницу приложения
- */
 export const goToPage = (newPage, data) => {
   if (
     [
@@ -45,7 +46,7 @@ export const goToPage = (newPage, data) => {
     ].includes(newPage)
   ) {
     if (newPage === ADD_POSTS_PAGE) {
-      // Если пользователь не авторизован, то отправляем его на авторизацию перед добавлением поста
+    
       page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
       return renderApp();
     }
@@ -67,11 +68,20 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      page = LOADING_PAGE
+      renderApp()
+      const userId = data.userId
+
+      return getPostsOfUser({ token: getToken(), userId: userId })
+          .then((newPosts) => {
+              page = USER_POSTS_PAGE
+              posts = newPosts
+              renderApp()
+          })
+          .catch((error) => {
+              console.error(error)
+              goToPage(POSTS_PAGE)
+          })
     }
 
     page = newPage;
@@ -110,8 +120,6 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
         addPost({
           token: getToken(),
           description,
@@ -119,7 +127,7 @@ const renderApp = () => {
         }).then((responceData) => {
           console.log(responceData);
         }),
-        
+
         goToPage(POSTS_PAGE);
       },
     });
