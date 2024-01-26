@@ -34,8 +34,8 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     renderHeaderComponent({
       element: document.querySelector('.header-container'),
     })
-
-    const uploadImageContainer = appEl.querySelector(".upload-image-container");
+      //Проверить надобность
+    // const uploadImageContainer = appEl.querySelector(".upload-image-container");
 
     if (uploadImageContainer) {
       renderUploadImageComponent({

@@ -1,9 +1,8 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-import { renderApp, setPosts } from "./index.js";
 
-const personalKey = "dmitriy-panfilov"; //"prod";
-const baseHost = "https://wedev-api.sky.pro";
+const personalKey = "dmitriy-panfilov"; //"prod"
+const baseHost = "https://wedev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
 export function getPosts({ token }) {
@@ -71,12 +70,12 @@ export function uploadImage({ file }) {
   });
 }
 
-export function addPost({ token, imageUrl }) {
+export function addPost({ token, description, imageUrl }) {
   const commentInputElement = document.getElementById('description')
   return fetch(postsHost, {
     method: 'POST',
     body: JSON.stringify({
-      description: commentInputElement.value,
+      description,
       imageUrl,
     }),
     headers: {
@@ -91,8 +90,8 @@ export function addPost({ token, imageUrl }) {
   });
 }
 
-export function getPostsOfUser({ token, userId }) {
-  return fetch(`${postsHost}/user-posts/${userId}`, {
+export function getUserPosts({ token, userId }) {
+  return fetch(postsHost + `/user-posts/${userId}`, {
       method: 'GET',
       headers: {
           Authorization: token,
@@ -105,11 +104,44 @@ export function getPostsOfUser({ token, userId }) {
           return response.json();
       })
       .then((data) => {
-          setPosts(data.posts)
+        
           return data.posts;
       })
       .catch((error) => {
           alert('Пропал интернет, попробуйте позже')
-          console.log(error)
+
       });
+}
+
+export const setLike = ({ token, postId }) => {
+  return fetch(postsHost + '/' + postId + "/like", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        alert('Поставить лайк можно только помле авторизации');
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+}
+
+export const removeLike = ({ token, postId }) => {
+  return fetch(postsHost + '/' + postId + "/dislike", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
 }
