@@ -43,7 +43,6 @@ export const goToPage = (newPage, data) => {
     ].includes(newPage)
   ) {
     if (newPage === ADD_POSTS_PAGE) {
-    
       page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
       return renderApp();
     }
@@ -59,25 +58,24 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           goToPage(POSTS_PAGE);
         });
     }
 
     if (newPage === USER_POSTS_PAGE) {
-
       let userId = data.userId;
 
       return getUserPosts({ token: getToken(), userId })
-          .then((newPosts) => {
-              page = USER_POSTS_PAGE
-              posts = newPosts
-              renderApp();
-          })
-          .catch((error) => {
-              console.error(error)
-              goToPage(USER_POSTS_PAGE);
-          });
+        .then((newPosts) => {
+          page = USER_POSTS_PAGE;
+          posts = newPosts;
+          renderApp();
+        })
+        .catch((error) => {
+          console.log(error);
+          goToPage(USER_POSTS_PAGE);
+        });
     }
 
     page = newPage;

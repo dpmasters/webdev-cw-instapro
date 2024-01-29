@@ -1,7 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
 
-const personalKey = "dmitriy-panfilov"; //"prod"
+const personalKey = "prod"; //"dmitriy-panfilov"; //
 const baseHost = "https://wedev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
