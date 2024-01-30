@@ -3,15 +3,15 @@ import { getToken, posts, renderApp } from "../index.js";
 
 
 
-export const likedUsers = ({ elementLikesLength, elementLikes }) => {
-    if (elementLikesLength === 1) {
-        return elementLikes.name;
-    } else if (elementLikesLength > 1) {
-        return `<strong>${elementLikes.name}</strong> и ещё <strong>${(elementLikesLength - 1)}</strong>`;
-    } else {
-        return elementLikesLength;
-    }
-};
+// export const likedUsers = ({ elementLikesLength, elementLikes }) => {
+//     if (elementLikesLength === 1) {
+//         return elementLikes.name;
+//     } else if (elementLikesLength > 1) {
+//         return `<strong>${elementLikes.name}</strong> и ещё <strong>${(elementLikesLength - 1)}</strong>`;
+//     } else {
+//         return elementLikesLength;
+//     }
+// };
 
 export const likeEventListener = () => {
     const likeButtons = document.querySelectorAll(".like-button");
@@ -26,18 +26,12 @@ export const likeEventListener = () => {
                 removeLike({ token: getToken(), postId })
                     .then(() => {
                         posts[index].isLiked = false;
-                        posts[index].likes--;
-                    })
-                    .then(() => {
                         renderAppp();
                     })
             } else {
                 setLike({ token: getTokenoken(), postId })
                     .then(() => {
                         posts[index].isLiked = true;
-                        posts[index].likes++;
-                    })
-                    .then(() => {
                         renderApp();
                     })
             }

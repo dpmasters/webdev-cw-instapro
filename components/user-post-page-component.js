@@ -17,6 +17,7 @@ export function renderUserPostsPageComponent({ appEl }) {
       postImageUserUrl: postItem.user.imageUrl,
       usersLikes: postItem.likes,
       isLiked: postItem.isLiked,
+	  id: postItem.id,
     };
   });
   const appHtml = getApiPosts.map((postItem, index) => {
@@ -39,7 +40,7 @@ export function renderUserPostsPageComponent({ appEl }) {
 							<img src="./assets/images/like-active.svg">
 						</button>
 						<p class="post-likes-text">
-						Нравится: <strong>${postItem.likes.length >= 1 ? postItem.likes[0].name : '0'}</strong> ${(postItem.likes.length - 1) > 0 ? 'и ещё' + ' ' + (postItem.likes.length - 1) : ''}
+						Нравится: <strong>${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name} ${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
 						</p>
 					</div>
 					<p class="post-text">

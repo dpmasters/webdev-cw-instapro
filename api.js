@@ -1,8 +1,8 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
 
-const personalKey = "prod";
-const baseHost = "https://webdev-hw-api.vercel.app";
+const personalKey = "dmitriy-panfilov";
+const baseHost = "https://webdev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
 export function getPosts({ token }) {
@@ -114,7 +114,7 @@ export function getUserPosts({ token, userId }) {
 }
 
 export const setLike = ({ token, postId }) => {
-  return fetch(postsHost + '/' + postId + "/like", {
+  return fetch(`${postsHost}/${postId}/like`, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -131,7 +131,7 @@ export const setLike = ({ token, postId }) => {
 }
 
 export const removeLike = ({ token, postId }) => {
-  return fetch(postsHost + '/' + postId + "/dislike", {
+  return fetch(`${postsHost}/${postId}/dislike`, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -139,6 +139,7 @@ export const removeLike = ({ token, postId }) => {
   })
     .then((response) => {
       if (response.status === 401) {
+        alert('Сначала аторизуйтесь');
         throw new Error("Нет авторизации");
       }
 
