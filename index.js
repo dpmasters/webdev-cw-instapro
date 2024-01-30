@@ -20,6 +20,9 @@ import { renderUserPostsPageComponent } from "./components/user-post-page-compon
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export const setPosts = (newPosts) => {
+  posts = newPosts;
+}
 
 export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -58,7 +61,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           goToPage(POSTS_PAGE);
         });
     }
@@ -73,7 +76,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           goToPage(USER_POSTS_PAGE);
         });
     }
@@ -120,8 +123,11 @@ export const renderApp = () => {
           imageUrl,
         }).then((responceData) => {
           console.log(responceData);
+          getPosts({ token: getToken() }).then((response) => {
+            posts = response;
+            renderApp();
+          });
         });
-
         goToPage(POSTS_PAGE);
       },
     });

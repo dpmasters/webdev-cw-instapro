@@ -1,28 +1,26 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
-import { formatDistance } from 'date-fns';
-import { ru } from 'date-fns/locale';
-import { likeEventListener, likedUsers } from "./add-like-component.js";
-
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
+import { likeEventListener } from "./add-like-component.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
-
-	const getApiPosts = posts.map((postItem) => {
-		return {
-			postImageUrl: postItem.imageUrl,
-			postCreatedAt: formatDistance(new Date(postItem.createdAt), new Date, { locale: ru }),
-			description: postItem.description,
-			userId: postItem.user.id,
-			userName: postItem.user.name,
-			userLogin: postItem.user.login,
-			postImageUserUrl: postItem.user.imageUrl,
-			usersLikes: postItem.likes,
-			isLiked: postItem.isLiked,
-		}
-	})
-	const appHtml = getApiPosts.map((postItem, index) => {
-		return `
+  const getApiPosts = posts.map((postItem) => {
+    return {
+      postImageUrl: postItem.imageUrl,
+      date: formatDistanceToNow(new Date(postItem.createdAt), { locale: ru }),
+      description: postItem.description,
+      userId: postItem.user.id,
+      userName: postItem.user.name,
+      userLogin: postItem.user.login,
+      postImageUserUrl: postItem.user.imageUrl,
+      usersLikes: postItem.likes,
+      isLiked: postItem.isLiked,
+    };
+  });
+  const appHtml = getApiPosts.map((postItem, index) => {
+    return `
 		<div class="page-container">
         	<div class="header-container"></div>
         	<ul class="posts">
@@ -35,11 +33,13 @@ export function renderUserPostsPageComponent({ appEl }) {
 						<img class="post-image" src="${postItem.postImageUrl} data-index="${index}">
 					</div>
 					<div class="post-likes">
-						<button data-post-id="${postItem.postId} data-index="${index}" class="like-button">
+						<button data-post-id="${
+              postItem.postId
+            } data-index="${index}" class="like-button">
 							<img src="./assets/images/like-active.svg">
 						</button>
 						<p class="post-likes-text">
-						Нравится: ${likedUsers({ elementLikesLength: postItem.usersLikes.length, elementLikes: postItem.usersLikes.length [0] })}
+						Нравится: <strong>${postItem.likes.length >= 1 ? postItem.likes[0].name : '0'}</strong> ${(postItem.likes.length - 1) > 0 ? 'и ещё' + ' ' + (postItem.likes.length - 1) : ''}
 						</p>
 					</div>
 					<p class="post-text">
@@ -47,12 +47,12 @@ export function renderUserPostsPageComponent({ appEl }) {
 						${postItem.description}
 					</p>
 					<p class="post-date">
-						${postItem.postCreatedAt}
+						${postItem.date}
 					</p>
 				</li>
 			</ul >
-     	</div > `
-	});
+     	</div > `;
+  });
 
   appEl.innerHTML = appHtml;
 
