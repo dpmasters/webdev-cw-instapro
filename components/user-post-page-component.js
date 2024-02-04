@@ -31,7 +31,7 @@ export function renderUserPostsPageComponent({ appEl }) {
 						<p class="post-header__user-name">${postItem.userName}</p>
 					</div>
 					<div class="post-image-container">
-						<img class="post-image" src="${postItem.postImageUrl} data-index="${index}">
+						<img class="post-image" src="${postItem.postImageUrl}" data-index="${index}">
 					</div>
 					<div class="post-likes">
 						<button data-post-id="${
@@ -40,7 +40,8 @@ export function renderUserPostsPageComponent({ appEl }) {
 							<img src="./assets/images/like-active.svg">
 						</button>
 						<p class="post-likes-text">
-						Нравится: <strong>${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name} ${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
+						Нравится: <strong>${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name}
+						${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
 						</p>
 					</div>
 					<p class="post-text">
