@@ -1,9 +1,10 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, getToken } from "../index.js";
+import { setLike, removeLike } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
-import { likeEventListener } from "./add-like-component.js";
+// import { likeEventListener } from "./add-like-component.js";
 
 export function renderPostsPageComponent({ appEl }) {
   const getApiPosts = posts.map((postItem) => {
@@ -34,11 +35,11 @@ export function renderPostsPageComponent({ appEl }) {
 						<img class="post-image" src="${postItem.postImageUrl}" data-index="${index}">
 					</div>
 					<div class="post-likes">
-						<button data-post-id="${postItem.postId} data-index="${index}" class="like-button">
+						<button data-post-id="${postItem.postId}" data-index="${index}" class="like-button">
 							<img src="./assets/images/like-active.svg">
 						</button>
 						<p class="post-likes-text">
-						Нравится: <strong>${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name}
+						Нравится: ${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name}
 						${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
 						</p>
 					</div>
@@ -71,3 +72,28 @@ export function renderPostsPageComponent({ appEl }) {
   likeEventListener();
 }
 
+export function likeEventListener () {
+	const likeButtons = document.querySelectorAll(".like-button")
+	likeButtons.forEach(likeButton => {
+		likeButton.addEventListener("click", (event) => {
+			event.stopPropagation();
+			const postId = likeButton.dataset.postId
+			const index = likeButton.dataset.index
+			if (posts[index].isLiked) {
+				removeLike({ token: getToken(), postId })
+					.then((updatedPost) => {
+						posts[index].isLiked = false;
+						posts[index].likes = updatedPost.post.likes;
+						renderAppp();
+					})
+			} else {
+				setLike({ token: getToken(), postId })
+					.then((updatedPost) => {
+						posts[index].isLiked = true;
+						posts[index].likes = updatedPost.post.likes;
+						renderApp();
+					})
+			}
+		})
+	});
+};

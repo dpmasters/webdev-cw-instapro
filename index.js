@@ -69,7 +69,7 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       let userId = data.userId;
 
-      return getUserPosts({ token: getToken(), userId })
+      return getUserPosts({ token: getToken(), userid: userId })
         .then((newPosts) => {
           page = USER_POSTS_PAGE;
           posts = newPosts;

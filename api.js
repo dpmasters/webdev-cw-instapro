@@ -146,3 +146,15 @@ export const removeLike = ({ token, postId }) => {
       return response.json();
     })
 }
+
+export function deletePost({
+  token,
+  id
+}) {
+  return fetch(`${postsHost}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token
+    }
+  })
+}
