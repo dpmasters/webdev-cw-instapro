@@ -113,38 +113,33 @@ export function getUserPosts({ token, userId }) {
       });
 }
 
-export const setLike = ({ token, postId }) => {
+export function setLike({ token, postId }) {
   return fetch(`${postsHost}/${postId}/like`, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
-  })
-    .then((response) => {
+      method: 'POST',
+      headers: {
+          Authorization: token,
+      },
+  }).then((response) => {
       if (response.status === 401) {
         alert('Поставить лайк можно только помле авторизации');
-        throw new Error("Нет авторизации");
+          throw new Error('Нет авторизации')
       }
-
-      return response.json();
-    })
-}
-
-export const removeLike = ({ token, postId }) => {
-  return fetch(`${postsHost}/${postId}/dislike`, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
+      return response.json()
   })
-    .then((response) => {
+}
+export function removeLike({ token, postId }) {
+  return fetch(`${postsHost}/${postId}/dislike`, {
+      method: 'POST',
+      headers: {
+          Authorization: token,
+      },
+  }).then((response) => {
       if (response.status === 401) {
         alert('Сначала аторизуйтесь');
-        throw new Error("Нет авторизации");
+          throw new Error('Нет авторизации')
       }
-
-      return response.json();
-    })
+      return response.json()
+  })
 }
 
 export function deletePost({

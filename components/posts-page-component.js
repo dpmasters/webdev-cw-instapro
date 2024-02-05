@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken } from "../index.js";
-import { setLike, removeLike } from "../api.js";
+import { removeLike, setLike } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 // import { likeEventListener } from "./add-like-component.js";
@@ -32,12 +32,16 @@ export function renderPostsPageComponent({ appEl }) {
 						<p class="post-header__user-name">${postItem.userName}</p>
 					</div>
 					<div class="post-image-container">
-						<img class="post-image" src="${postItem.postImageUrl}" data-index="${index}">
+						<img class="post-image" data-post-id="${postItem.postId}" src="${postItem.postImageUrl}" data-index="${index}">
 					</div>
 					<div class="post-likes">
-						<button data-post-id="${postItem.postId}" data-index="${index}" class="like-button">
-							<img src="./assets/images/like-active.svg">
-						</button>
+					<button data-post-id="${postItem.postId}"data-like="${postItem.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
+					<img src=${
+					  postItem.isLiked
+						  ? './assets/images/like-active.svg'
+						  : './assets/images/like-not-active.svg'
+				  }>
+				  </button> 
 						<p class="post-likes-text">
 						Нравится: ${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name}
 						${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
@@ -48,7 +52,7 @@ export function renderPostsPageComponent({ appEl }) {
 						${postItem.description}
 					</p>
 					<p class="post-date">
-						${postItem.date}
+						${postItem.date} назад
 					</p>
 				</li>
 			</ul >
