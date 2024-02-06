@@ -121,7 +121,7 @@ export function setLike({ token, postId }) {
       },
   }).then((response) => {
       if (response.status === 401) {
-        alert('Поставить лайк можно только помле авторизации');
+        alert('Поставить лайк можно только поcле авторизации');
           throw new Error('Нет авторизации')
       }
       return response.json();

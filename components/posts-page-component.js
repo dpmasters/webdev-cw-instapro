@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, getToken } from "../index.js";
+import { posts, goToPage, getToken, renderApp } from "../index.js";
 import { removeLike, setLike } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
@@ -32,10 +32,10 @@ export function renderPostsPageComponent({ appEl }) {
 						<p class="post-header__user-name">${postItem.userName}</p>
 					</div>
 					<div class="post-image-container">
-						<img class="post-image" data-post-id="${postItem.postId}" src="${postItem.postImageUrl}" data-index="${index}">
+						<img class="post-image" data-post-id="${postItem.id}" src="${postItem.postImageUrl}" data-index="${index}">
 					</div>
 					<div class="post-likes">
-					<button data-post-id="${postItem.postId}"data-like="${postItem.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
+					<button data-post-id="${postItem.id}"data-like="${postItem.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
 					<img src=${
 					  postItem.isLiked
 						  ? './assets/images/like-active.svg'
@@ -88,7 +88,7 @@ export function likeEventListener () {
 					.then((updatedPost) => {
 						posts[index].isLiked = false;
 						posts[index].likes = updatedPost.post.likes;
-						renderAppp();
+						renderApp();
 					})
 			} else {
 				setLike({ token: getToken(), postId })

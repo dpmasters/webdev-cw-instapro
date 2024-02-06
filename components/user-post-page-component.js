@@ -35,11 +35,13 @@ export function renderUserPostsPageComponent({ appEl }) {
 						<img class="post-image" src="${postItem.postImageUrl}" data-index="${index}">
 					</div>
 					<div class="post-likes">
-						<button data-post-id="${
-              postItem.postId
-            }" data-index="${index}" class="like-button">
-							<img src="./assets/images/like-active.svg">
-						</button>
+						<button data-post-id="${postItem.id}"data-like="${postItem.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
+					<img src=${
+					  postItem.isLiked
+						  ? './assets/images/like-active.svg'
+						  : './assets/images/like-not-active.svg'
+				  }>
+				  </button> 
 						<p class="post-likes-text">
 						Нравится: <strong>${
               postItem.usersLikes.length > 0
@@ -94,7 +96,7 @@ export function likeEventListener() {
         removeLike({ token: getToken(), postId }).then((updatedPost) => {
           posts[index].isLiked = false;
           posts[index].likes = updatedPost.post.likes;
-          renderAppp();
+          renderApp();
         });
       } else {
         setLike({ token: getToken(), postId }).then((updatedPost) => {
