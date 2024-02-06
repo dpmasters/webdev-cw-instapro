@@ -124,8 +124,8 @@ export function setLike({ token, postId }) {
         alert('Поставить лайк можно только помле авторизации');
           throw new Error('Нет авторизации')
       }
-      return response.json()
-  })
+      return response.json();
+  });
 }
 export function removeLike({ token, postId }) {
   return fetch(`${postsHost}/${postId}/dislike`, {
@@ -138,8 +138,8 @@ export function removeLike({ token, postId }) {
         alert('Сначала аторизуйтесь');
           throw new Error('Нет авторизации')
       }
-      return response.json()
-  })
+      return response.json();
+  });
 }
 
 export function deletePost({
@@ -151,5 +151,5 @@ export function deletePost({
     headers: {
       Authorization: token
     }
-  })
+  });
 }
