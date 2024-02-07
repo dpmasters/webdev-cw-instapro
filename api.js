@@ -90,8 +90,10 @@ export function addPost({ token, description, imageUrl }) {
   });
 }
 
-export function getUserPosts({ token, userId }) {
-  return fetch(postsHost + `/user-posts/${userId}`, {
+
+
+export function getUserPosts({ token, userid }) {
+  return fetch(postsHost + `/user-posts/${userid}`, {
       method: 'GET',
       headers: {
           Authorization: token,
@@ -142,11 +144,8 @@ export function removeLike({ token, postId }) {
   });
 }
 
-export function deletePost({
-  token,
-  id
-}) {
-  return fetch(`${postsHost}/${id}`, {
+export function deletePost({ token, userid }) {
+  return fetch(`${postsHost}/${userid}`, {
     method: "DELETE",
     headers: {
       Authorization: token
