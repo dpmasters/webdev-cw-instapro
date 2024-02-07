@@ -46,6 +46,10 @@ export function renderPostsPageComponent({ appEl }) {
 						Нравится: ${postItem.usersLikes.length > 0 ? `${postItem.usersLikes[postItem.usersLikes.length - 1].name}
 						${postItem.usersLikes.length - 1 > 0 ? 'и ещё' + (postItem.usersLikes.length - 1) : ''} ` : '0'}
 						</p>
+						<button class="delete-button" data-post-id="${postItem.userid}">
+						${postItem.userid === user?._id ? `<p class="delete">Удалить</p>` : ""} 
+					  </button>
+					</div>
 					</div>
 					<p class="post-text">
 						<span class="user-name">${postItem.userName}</span>
@@ -74,6 +78,22 @@ export function renderPostsPageComponent({ appEl }) {
   }
 
   likeEventListener();
+}
+
+const deleteButtons = document.querySelectorAll(".delete-button");
+for (let deleteButton of deleteButtons) {
+  deleteButton.addEventListener("click", () => {
+	const id = deleteButton.dataset.postId
+	deletePost({
+		token: getToken(),
+		id
+	  })
+	  .then(() => {
+		goToPage(USER_POSTS_PAGE, {
+		  userId: posts[0].user.id
+		})
+	  })
+  })
 }
 
 export function likeEventListener () {

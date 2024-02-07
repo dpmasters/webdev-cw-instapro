@@ -54,7 +54,11 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
+						<button class="delete-button" data-post-id="${postItem.userid}">
+						${postItem.userid === user?._id ? `<p class="delete">Удалить</p>` : ""} 
+					  </button>
 					</div>
+					
 					<p class="post-text">
 						<span class="user-name">${postItem.userName}</span>
 						${postItem.description}
@@ -82,6 +86,22 @@ export function renderUserPostsPageComponent({ appEl }) {
   }
 
   likeEventListener();
+}
+
+const deleteButtons = document.querySelectorAll(".delete-button");
+for (let deleteButton of deleteButtons) {
+  deleteButton.addEventListener("click", () => {
+	const id = deleteButton.dataset.postId
+	deletePost({
+		token: getToken(),
+		id
+	  })
+	  .then(() => {
+		goToPage(USER_POSTS_PAGE, {
+		  userId: posts[0].user.id
+		})
+	  })
+  })
 }
 
 export function likeEventListener() {
