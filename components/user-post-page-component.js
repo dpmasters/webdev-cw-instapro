@@ -104,6 +104,18 @@ for (let deleteButton of deleteButtons) {
   })
 }
 
+// function deleteCommentForm() {
+//     if (!token) return
+//     const deleteButtonElement = document.querySelector(".delete-form-button");
+//     deleteButtonElement.addEventListener("click", () => {
+//       console.log(comments[comments.length - 1])
+//       deleteComment({ id:comments[comments.length - 1].id }).then(() => {
+//        getRenderComments({ comments });
+//       })
+//     });
+//   }
+//   deleteCommentForm();
+
 export function likeEventListener() {
   const likeButtons = document.querySelectorAll(".like-button");
   likeButtons.forEach((likeButton) => {

@@ -93,6 +93,15 @@
   cursor: pointer;
 }
 
+.delete-button {
+  border: none;
+  background-color: transparent;
+  text-align: right;
+  font-family: 'StratosSkyeng';
+  font-size: medium;
+  cursor: pointer;
+}
+
 .user-name {
   font-weight: 500;
 }

@@ -144,8 +144,8 @@ export function removeLike({ token, postId }) {
   });
 }
 
-export function deletePost({ token, userid }) {
-  return fetch(`${postsHost}/${userid}`, {
+export function deletePost({ token, postId }) {
+  return fetch(`${postsHost}/${postId}`, {
     method: "DELETE",
     headers: {
       Authorization: token
