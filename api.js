@@ -151,6 +151,6 @@ export function deletePost({ token, postId }) {
       Authorization: token,
     },
   }).then((response) => {
-    response.json()
+    return response.json();
   })
 }
