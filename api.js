@@ -148,7 +148,9 @@ export function deletePost({ token, postId }) {
   return fetch(`${postsHost}/${postId}`, {
     method: "DELETE",
     headers: {
-      Authorization: token
-    }
-  });
+      Authorization: token,
+    },
+  }).then((response) => {
+    response.json()
+  })
 }

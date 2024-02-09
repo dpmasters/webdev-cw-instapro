@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken, renderApp } from "../index.js";
-import { setLike, removeLike } from "../api.js";
+import { setLike, removeLike, deletePost, getUserPosts } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 // import { likeEventListener } from "./add-like-component.js";
@@ -27,7 +27,7 @@ export function renderUserPostsPageComponent({ appEl }) {
         	<div class="header-container"></div>
         	<ul class="posts">
           		<li class="post" data-index=${index}>
-					<div class="post-header" data-user-id="${postItem.userId}">
+					<div class="post-header" data-user-id="${postItem.id}">
 						<img src="${postItem.postImageUserUrl}" class="post-header__user-image">
 						<p class="post-header__user-name">${postItem.userName}</p>
 					</div>
@@ -54,8 +54,8 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
-						<button class="delete-button" data-post-id="${postItem.userid}">
-						${postItem.userid === user?._id ? `<p class="delete">Удалить</p>` : ""} 
+						<button class="delete-button" data-post-id="${postItem.id}">
+						<p class="delete">Удалить</p>
 					  </button>
 					</div>
 					
@@ -89,7 +89,7 @@ export function renderUserPostsPageComponent({ appEl }) {
 }
 
 const deleteButtons = document.querySelectorAll(".delete-button");
-for (let deleteButton of deleteButtons) {
+for (const deleteButton of deleteButtons) {
   deleteButton.addEventListener("click", () => {
 	const id = deleteButton.dataset.postId
 	deletePost({
@@ -103,18 +103,6 @@ for (let deleteButton of deleteButtons) {
 	  })
   })
 }
-
-// function deleteCommentForm() {
-//     if (!token) return
-//     const deleteButtonElement = document.querySelector(".delete-form-button");
-//     deleteButtonElement.addEventListener("click", () => {
-//       console.log(comments[comments.length - 1])
-//       deleteComment({ id:comments[comments.length - 1].id }).then(() => {
-//        getRenderComments({ comments });
-//       })
-//     });
-//   }
-//   deleteCommentForm();
 
 export function likeEventListener() {
   const likeButtons = document.querySelectorAll(".like-button");
