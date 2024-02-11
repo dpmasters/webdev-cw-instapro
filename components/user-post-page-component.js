@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken, renderApp } from "../index.js";
-import { setLike, removeLike, deletePost, getUserPosts } from "../api.js";
+import { setLike, removeLike, deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 // import { likeEventListener } from "./add-like-component.js";
@@ -54,7 +54,7 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
-					<button class="delete-button" data-post-id="${postItem.id}">
+					<button class="delete-button" data-post-id="${postItem.userId}">
           <p class="delete">Удалить</p>
           </button>
 					</div>
@@ -84,24 +84,34 @@ export function renderUserPostsPageComponent({ appEl }) {
       });
     });
   }
+  postDeleteButton();
 
   likeEventListener();
 }
 
+// export function postDeleteButton() {
+//   const deleteButtonElement = document.querySelector(".delete-button");
+//   deleteButtonElement.addEventListener("click", () => {
+//     console.log(postItem[postItem.length - 1]);
+//     deletePost({ id: postItem[postItem.length - 1].id }).then(() => {
+//       renderApp(( postItem ));
+//     });
+//   });
+// }
+
+export function postDeleteButton() {
 const deleteButtons = document.querySelectorAll(".delete-button");
-for (const deleteButton of deleteButtons) {
+for (let deleteButton of deleteButtons) {
   deleteButton.addEventListener("click", () => {
 	const id = deleteButton.dataset.postId
-	deletePost({
-		token: getToken(),
-		id
-	  })
-	  .then(() => {
-		goToPage(USER_POSTS_PAGE, {
-		  userId: posts[0].user.id
-		})
-	  })
-  })
+	deletePost({ token: getToken(), id })
+  .then(() => {
+      goToPage(USER_POSTS_PAGE, {
+        userId: posts[0].user.id
+      })
+    })
+})
+}
 }
 
 export function likeEventListener() {
