@@ -4,6 +4,7 @@ import { posts, goToPage, getToken, renderApp } from "../index.js";
 import { setLike, removeLike, deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
+import { likeEventListener } from "./posts-page-component.js";
 // import { likeEventListener } from "./add-like-component.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
@@ -54,7 +55,7 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
-					<button class="delete-button" data-post-id="${postItem.userId}">
+					<button class="delete-button" data-post-id="${postItem.id}">
           <p class="delete">Удалить</p>
           </button>
 					</div>
@@ -89,52 +90,18 @@ export function renderUserPostsPageComponent({ appEl }) {
   likeEventListener();
 }
 
-// export function postDeleteButton() {
-//   const deleteButtonElement = document.querySelector(".delete-button");
-//   deleteButtonElement.addEventListener("click", () => {
-//     console.log(postItem[postItem.length - 1]);
-//     deletePost({ id: postItem[postItem.length - 1].id }).then(() => {
-//       renderApp(( postItem ));
-//     });
-//   });
-// }
-
 export function postDeleteButton() {
 const deleteButtons = document.querySelectorAll(".delete-button");
 for (let deleteButton of deleteButtons) {
   deleteButton.addEventListener("click", () => {
 	const id = deleteButton.dataset.postId
+  console.log();
 	deletePost({ token: getToken(), id })
   .then(() => {
-      goToPage(USER_POSTS_PAGE, {
-        userId: posts[0].user.id
-      })
+      goToPage(USER_POSTS_PAGE);
     })
 })
 }
 }
 
-export function likeEventListener() {
-  const likeButtons = document.querySelectorAll(".like-button");
-  likeButtons.forEach((likeButton) => {
-    likeButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const postId = likeButton.dataset.postId
-      const index = likeButton.dataset.index
-
-      if (posts[index].isLiked) {
-        removeLike({ token: getToken(), postId }).then((updatedPost) => {
-          posts[index].isLiked = false;
-          posts[index].likes = updatedPost.post.likes;
-          renderApp();
-        });
-      } else {
-        setLike({ token: getToken(), postId }).then((updatedPost) => {
-          posts[index].isLiked = true;
-          posts[index].likes = updatedPost.post.likes;
-          renderApp();
-        });
-      }
-    });
-  });
-}
+likeEventListener();

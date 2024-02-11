@@ -144,13 +144,24 @@ export function removeLike({ token, postId }) {
   });
 }
 
-export function deletePost({ token, postId }) {
-  return fetch(`${postsHost}/${postId}`, {
+export function deletePost({ token, id }) {
+  return fetch(`${postsHost}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: token,
     },
+    body: JSON.stringify({ id }),
   }).then((response) => {
-    return response.json();
+    if (response.ok) {
+      // Пост успешно удален, выполните необходимые действия, например, обновите страницу
+      location.reload();
+    } else {
+      // Обработайте ошибку удаления поста
+      throw new Error('Ошибка удаления поста');
+    }
   })
+  .catch((error) => {
+    // Обработайте ошибку запроса
+    console.error(error);
+  });
 }
