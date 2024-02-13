@@ -21,7 +21,7 @@ export function getPosts({ token }) {
     });
 }
 
-export function registerUser({ login, password, name, imageUrl }) {
+export function registerUser({ login, password, name, imageUrl, text }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
     body: JSON.stringify({
@@ -34,6 +34,9 @@ export function registerUser({ login, password, name, imageUrl }) {
     if (response.status === 400) {
       throw new Error("Такой пользователь уже существует");
     }
+    if (text === !text) {
+      throw new Error("Введите текст");
+    } 
     return response.json();
   });
 }
@@ -145,6 +148,7 @@ export function deletePost({ token, id }) {
     headers: {
       Authorization: token,
     },
+    body: JSON.stringify({ id }),
   }).then((response) => {
     if (response.ok) {
       location.reload();

@@ -28,7 +28,7 @@ export function renderUserPostsPageComponent({ appEl }) {
         	<div class="header-container"></div>
         	<ul class="posts">
           		<li class="post" data-index=${index}>
-					<div class="post-header" data-user-id="${postItem.id}">
+					<div class="post-header" data-user-id="${postItem.userId}">
 						<img src="${postItem.postImageUserUrl}" class="post-header__user-image">
 						<p class="post-header__user-name">${postItem.userName}</p>
 					</div>
@@ -98,7 +98,9 @@ for (let deleteButton of deleteButtons) {
   console.log();
 	deletePost({ token: getToken(), id })
   .then(() => {
-      goToPage(USER_POSTS_PAGE);
+      goToPage(USER_POSTS_PAGE, {
+        // userId: posts[0].user.id
+      })
     })
 })
 }
