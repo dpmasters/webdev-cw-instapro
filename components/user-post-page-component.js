@@ -55,9 +55,8 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
-					<button class="delete-button" data-post-id="${postItem.id}">
-          <p class="delete">Удалить</p>
-          </button>
+            <button class="delete-button" data-post-id="${postItem.userId}">
+            ${postItem.id === user?._id ? `<p class="delete">Удалить</p>` : ""} 
 					</div>
 					
 					<p class="post-text">
