@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, getToken, renderApp } from "../index.js";
+import { posts, goToPage, getToken, renderApp, user } from "../index.js";
 import { setLike, removeLike, deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
@@ -55,8 +55,8 @@ export function renderUserPostsPageComponent({ appEl }) {
                 : "0"
             }
 						</p>
-            <button class="delete-button" data-post-id="${postItem.userId}">
-            ${postItem.id === user?._id ? `<p class="delete">Удалить</p>` : ""} 
+            <button class="delete-button" data-post-id="${postItem.id}">
+            ${postItem.userId === user?._id ? `<p class="delete">Удалить</p>` : ""} 
 					</div>
 					
 					<p class="post-text">
