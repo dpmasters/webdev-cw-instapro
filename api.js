@@ -142,21 +142,15 @@ export function removeLike({ token, postId }) {
   });
 }
 
-export function deletePost({ token, id }) {
+export function deletePost({
+  token,
+  id
+}) {
   return fetch(`${postsHost}/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: token,
-    },
-    body: JSON.stringify({ id }),
-  }).then((response) => {
-    if (response.ok) {
-      location.reload();
-    } else {
-      throw new Error('Ошибка удаления поста');
+      Authorization: token
     }
   })
-  .catch((error) => {
-    console.error(error);
-  });
+  
 }

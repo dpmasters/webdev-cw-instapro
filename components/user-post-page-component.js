@@ -1,11 +1,11 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, getToken, renderApp, user } from "../index.js";
-import { setLike, removeLike, deletePost } from "../api.js";
+import { posts, goToPage, getToken, user } from "../index.js";
+import { deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { likeEventListener } from "./posts-page-component.js";
-// import { likeEventListener } from "./add-like-component.js";
+
 
 export function renderUserPostsPageComponent({ appEl }) {
   const getApiPosts = posts.map((postItem) => {
@@ -98,7 +98,7 @@ for (let deleteButton of deleteButtons) {
 	deletePost({ token: getToken(), id })
   .then(() => {
       goToPage(USER_POSTS_PAGE, {
-        // userId: posts[0].user.id
+        userId: user._id
       })
     })
 })
