@@ -4,15 +4,16 @@ import { posts, goToPage, getToken, renderApp } from "../index.js";
 import { removeLike, setLike } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
+import { replaceSafe } from "../helpers.js";
 
 export function renderPostsPageComponent({ appEl }) {
   const getApiPosts = posts.length ? posts.map((postItem) => {
     return {
       postImageUrl: postItem.imageUrl,
       date: formatDistanceToNow(new Date(postItem.createdAt), { locale: ru }),
-      description: postItem.description,
+      description: replaceSafe(postItem.description),
       userId: postItem.user.id,
-      userName: postItem.user.name,
+      userName: replaceSafe(postItem.user.name),
       userLogin: postItem.user.login,
       postImageUserUrl: postItem.user.imageUrl,
       usersLikes: postItem.likes,

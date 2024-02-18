@@ -5,6 +5,7 @@ import { deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { likeEventListener } from "./posts-page-component.js";
+import { replaceSafe } from "../helpers.js";
 
 
 export function renderUserPostsPageComponent({ appEl }) {
@@ -12,9 +13,9 @@ export function renderUserPostsPageComponent({ appEl }) {
     return {
       postImageUrl: postItem.imageUrl,
       date: formatDistanceToNow(new Date(postItem.createdAt), { locale: ru }),
-      description: postItem.description,
+      description: replaceSafe(postItem.description),
       userId: postItem.user.id,
-      userName: postItem.user.name,
+      userName: replaceSafe(postItem.user.name),
       userLogin: postItem.user.login,
       postImageUserUrl: postItem.user.imageUrl,
       usersLikes: postItem.likes,
